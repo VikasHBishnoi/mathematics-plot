@@ -1,0 +1,28 @@
+// Add to index.scss or ActivityArea.scss
+
+.activity-area {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+
+    .left-panel {
+        flex: 1;
+        padding: 24px;
+        background: #fafbfc;
+        border-right: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .main-canvas-area {
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+    }
+}
