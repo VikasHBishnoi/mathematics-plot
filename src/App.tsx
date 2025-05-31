@@ -1,29 +1,33 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from "react";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import "./App.scss";
 
-function App() {
-  const [inputValue, setInputValue] = useState<string>('');
+const App: React.FC = () => {
+  const [inputValue, setInputValue] = useState<string>("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Mathematics Plot</h1>
-      
-      <input
-        type="text"
-        placeholder="Enter your function here"
-        value={inputValue}
-        onChange={handleChange}
-        style={{ padding: '8px', width: '300px', fontSize: '16px' }}
-      />
-      
-      <p style={{ marginTop: '10px', fontSize: '18px' }}>
-        You typed: <strong>{inputValue}</strong>
-      </p>
+    <div className="app-container">
+      <Header title="Mathematics Plot" />
+      <main className="main-content">
+        <input
+          type="text"
+          className="function-input"
+          placeholder="Enter your function here"
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+        <p className="typed-text">
+          You typed: <strong>{inputValue}</strong>
+        </p>
+      </main>
+      <Footer text="Made With Love" />
     </div>
   );
-}
+};
 
 export default App;
