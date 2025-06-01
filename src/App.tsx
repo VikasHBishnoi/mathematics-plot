@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <div className="app-container">
       <Header title="Mathematics Plot" />
       <ActivityArea />
-      <Footer text="Made With Love" />
+      <Footer />
     </div>
   );
 };

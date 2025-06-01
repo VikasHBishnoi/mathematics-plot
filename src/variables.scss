@@ -1,0 +1,27 @@
+:root {
+    // Color variables
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #212529;
+    --border-color: #dee2e6;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+
+    // Font variables
+    --font-family-base: 'Segoe UI', Arial, sans-serif;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-sm: 0.875rem;
+
+    // Spacing variables
+    --spacer: 1rem;
+    --spacer-sm: 0.5rem;
+    --spacer-lg: 2rem;
+
+    // Border radius
+    --border-radius: 0.25rem;
+    --border-radius-lg: 0.5rem;
+    --border-radius-sm: 0.2rem;
+}

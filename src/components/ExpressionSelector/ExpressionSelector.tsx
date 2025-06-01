@@ -1,19 +1,32 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 import Expression from "../Expression/Expression";
+import CheckboxItemList from "../FormElements/CheckboxItem/CheckbotItemList";
+import { ExpressionInterface } from "../../Interface";
 
-const ExpressionSelector: React.FC = () => {
-  const [expressionArray, setExpressionArray] = useState<string[]>([
-    "x+2",
-    "x^2+2",
-  ]);
+interface ExpressionSelectorProps {
+  expressionArray: ExpressionInterface[];
+  setExpressionArray: React.Dispatch<SetStateAction<ExpressionInterface[]>>;
+}
+const ExpressionSelector: React.FC<ExpressionSelectorProps> = ({
+  expressionArray,
+  setExpressionArray,
+}) => {
   const handleInputChange = (
     event: ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
     setExpressionArray((prv) => {
       const newArray = [...prv];
-      newArray[index] = event.target.value;
+      newArray[index].equationInputStr = event.target.value;
       return newArray;
+    });
+  };
+
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    setExpressionArray((prev) => {
+      const newExpression = [...prev];
+      newExpression[index].isEquationShown = checked;
+      return newExpression;
     });
   };
 
@@ -21,11 +34,19 @@ const ExpressionSelector: React.FC = () => {
     <div className="expression-selector">
       <h2>Expression Selector</h2>
       {expressionArray.map((expression, index) => (
-        <Expression
-          key={index}
-          inputValue={expression}
-          handleInputChange={(e) => handleInputChange(e, index)}
-        />
+        <CheckboxItemList
+          key={"expression" + index}
+          id={"checkbox" + index}
+          checked={expression.isEquationShown}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            handleCheckboxChange(index, e.target.checked);
+          }}
+        >
+          <Expression
+            inputValue={expression.equationInputStr}
+            handleInputChange={(e) => handleInputChange(e, index)}
+          />
+        </CheckboxItemList>
       ))}
     </div>
   );

@@ -2,13 +2,21 @@ import React, { useState } from "react";
 import LeftPanel from "../LeftPanel/LeftPanel";
 import MainCanvasArea from "../GraphCanvas/GraphCanvas";
 import "./ActivityArea.scss";
+import { ExpressionInterface } from "../../Interface";
 const ActivityArea: React.FC = () => {
-  const [inputValue, setInputValue] = useState<string>("");
-
+  const [expressionArray, setExpressionArray] = useState<ExpressionInterface[]>(
+    [
+      { equationInputStr: "x+2", isEquationShown: false },
+      { equationInputStr: "x^2+2", isEquationShown: false },
+    ]
+  );
   return (
     <main className="activity-area">
-      <LeftPanel inputValue={inputValue} setInputValue={setInputValue} />
-      <MainCanvasArea />
+      <LeftPanel
+        expressionArray={expressionArray}
+        setExpressionArray={setExpressionArray}
+      />
+      <MainCanvasArea expressionArray={expressionArray} />
     </main>
   );
 };
