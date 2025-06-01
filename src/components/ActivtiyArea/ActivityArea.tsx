@@ -6,8 +6,32 @@ import { ExpressionInterface } from "../../Interface";
 const ActivityArea: React.FC = () => {
   const [expressionArray, setExpressionArray] = useState<ExpressionInterface[]>(
     [
-      { equationInputStr: "x+2", isEquationShown: false },
-      { equationInputStr: "x^2+2", isEquationShown: false },
+      {
+        equationInputStr: "x+2",
+        isEquationShown: false,
+        equationParamters: {
+          equationParamtersArray: [
+            {
+              power: 1,
+              coefficient: 1,
+            },
+          ],
+          constant: 2,
+        },
+      },
+      {
+        equationInputStr: "x^2+2",
+        isEquationShown: false,
+        equationParamters: {
+          equationParamtersArray: [
+            {
+              power: 2,
+              coefficient: 1,
+            },
+          ],
+          constant: 2,
+        },
+      },
     ]
   );
   return (

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
 interface InputProps {
+  id: string;
   inputValue: string;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<InputProps> = ({ inputValue, handleInputChange }) => {
+const Input: React.FC<InputProps> = ({ id, inputValue, handleInputChange }) => {
   return (
     <input
+      id={id}
       type="text"
       className="function-input"
       placeholder="Enter your function here"
