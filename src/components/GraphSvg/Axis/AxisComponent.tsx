@@ -1,0 +1,142 @@
+import { useEffect, useState } from "react";
+import { xToSvg, yToSvg } from "../HelperFunction/HelperFunction";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../Svgconstants";
+import { AxisDetails } from "../SvgInterface";
+const TICK_EVERY = 2;
+const TICK_10 = 10;
+const TICK_20 = 20;
+
+type TickOrLabel =
+  | { type: "xtick"; x: number; y0: number; tickLen: number; v: number }
+  | { type: "xlabel"; x: number; y0: number; tickLen: number; v: number }
+  | { type: "ytick"; y: number; x0: number; tickLen: number; v: number }
+  | { type: "ylabel"; y: number; x0: number; tickLen: number; v: number };
+
+interface AxisComponentProps {
+  AXIS_MIN?: number;
+  xAxisDetails: AxisDetails;
+  yAxisDetails: AxisDetails;
+}
+const AxisComponent: React.FC<AxisComponentProps> = ({
+  //   AXIS_MIN = -70,
+  xAxisDetails,
+  yAxisDetails,
+}) => {
+  const [tickData, setTickData] = useState<TickOrLabel[]>([]);
+  const xAxisMin = xAxisDetails.AXIS_MIN;
+  const xAxisMax = xAxisDetails.AXIS_MAX;
+  const yAxisMin = yAxisDetails.AXIS_MIN;
+  const yAxisMax = yAxisDetails.AXIS_MAX;
+  useEffect(() => {
+    const ticks: TickOrLabel[] = [];
+    // X axis ticks and labels
+    for (let v = xAxisMin; v <= xAxisMax; v += TICK_EVERY) {
+      let x = xToSvg(v, xAxisMin, xAxisMax);
+      let y0 = yToSvg(0, yAxisMin, yAxisMax);
+      let tickLen = 6;
+      if (v % TICK_20 === 0) tickLen = 14;
+      else if (v % TICK_10 === 0) tickLen = 10;
+      ticks.push({ type: "xtick", x, y0, tickLen, v });
+      if (v % TICK_20 === 0 && v !== 0) {
+        ticks.push({ type: "xlabel", x, y0, tickLen, v });
+      }
+    }
+
+    // Y axis ticks and labels
+    for (let v = yAxisMin; v <= yAxisMax; v += TICK_EVERY) {
+      let y = yToSvg(v, yAxisMin, yAxisMax);
+      let x0 = xToSvg(0, xAxisMin, xAxisMax);
+      let tickLen = 6;
+      if (v % TICK_20 === 0) tickLen = 18;
+      else if (v % TICK_10 === 0) tickLen = 12;
+      ticks.push({ type: "ytick", y, x0, tickLen, v });
+      if (v % TICK_20 === 0 && v !== 0) {
+        ticks.push({ type: "ylabel", y, x0, tickLen, v });
+      }
+    }
+
+    setTickData(ticks);
+  }, [xAxisMin, xAxisMax, yAxisMin, yAxisMax]);
+  return (
+    <g>
+      <line
+        x1={0}
+        y1={yToSvg(0, yAxisMin, yAxisMax)}
+        x2={CANVAS_WIDTH}
+        y2={yToSvg(0, yAxisMin, yAxisMax)}
+        stroke="#333"
+        strokeWidth={2}
+      />
+      {/* Y axis */}
+      <line
+        x1={xToSvg(0, xAxisMin, xAxisMax)}
+        y1={0}
+        x2={xToSvg(0, xAxisMin, xAxisMax)}
+        y2={CANVAS_HEIGHT}
+        stroke="#333"
+        strokeWidth={2}
+      />
+      {/* Ticks and labels */}
+      {tickData.map((tick, i) => {
+        if (tick.type === "xtick") {
+          return (
+            <line
+              key={`xtick-${tick.v}`}
+              x1={tick.x}
+              y1={tick.y0 - tick.tickLen / 2}
+              x2={tick.x}
+              y2={tick.y0 + tick.tickLen / 2}
+              stroke="#333"
+              strokeWidth={1}
+            />
+          );
+        }
+        if (tick.type === "xlabel") {
+          return (
+            <text
+              key={`xlabel-${tick.v}`}
+              x={tick.x}
+              y={tick.y0 + tick.tickLen / 2 + 12}
+              fontSize={14}
+              textAnchor="middle"
+              fill="#333"
+            >
+              {tick.v}
+            </text>
+          );
+        }
+        if (tick.type === "ytick") {
+          return (
+            <line
+              key={`ytick-${tick.v}`}
+              x1={tick.x0 - tick.tickLen / 2}
+              y1={tick.y}
+              x2={tick.x0 + tick.tickLen / 2}
+              y2={tick.y}
+              stroke="#333"
+              strokeWidth={1}
+            />
+          );
+        }
+        if (tick.type === "ylabel") {
+          return (
+            <text
+              key={`ylabel-${tick.v}`}
+              x={tick.x0 - tick.tickLen / 2 - 6}
+              y={tick.y + 4}
+              fontSize={14}
+              textAnchor="end"
+              fill="#333"
+              alignmentBaseline="middle"
+            >
+              {tick.v}
+            </text>
+          );
+        }
+        return null;
+      })}
+    </g>
+  );
+};
+
+export default AxisComponent;
