@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LeftPanel from "../LeftPanel/LeftPanel";
-import MainCanvasArea from "../GraphSvg/GraphSvg";
+import MainCanvasArea from "../GraphModule/GraphSvg";
 import "./ActivityArea.scss";
 import { ExpressionInterface } from "../../Interface";
 const ActivityArea: React.FC = () => {
