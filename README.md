@@ -17,7 +17,7 @@ An interactive graphing tool built with React for visualizing mathematical funct
 ## 📦 Setup
 
 ```bash
-git clone https://github.com/VikasHBishnoi/mathematics-plot.git
-cd mathematics-plot
+git clone https://github.com/VikasHBishnoi/Mathematics-Plot.git
+cd Mathematics-Plot
 npm install
 npm run dev # or npm start if using CRA

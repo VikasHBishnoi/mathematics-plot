@@ -1,9 +1,9 @@
 {
-  "name": "mathematics-plot",
+  "name": "Mathematics-Plot",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://vikashbishnoi.github.io/mathematics-plot",
+  "homepage": "https://vikashbishnoi.github.io/Mathematics-Plot",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
