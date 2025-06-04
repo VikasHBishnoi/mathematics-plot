@@ -3,6 +3,7 @@ import { xToSvg, yToSvg } from "../HelperFunction/HelperFunction";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../Svgconstants";
 import { AxisDetails } from "../SvgInterface";
 import StraightLine from "../StraightLine/StraightLine";
+import { useProvider } from "../../redux/Provider";
 const TICK_EVERY = 2;
 const TICK_10 = 10;
 const TICK_20 = 20;
@@ -13,21 +14,14 @@ type TickOrLabel =
   | { type: "ytick"; y: number; x0: number; tickLen: number; v: number }
   | { type: "ylabel"; y: number; x0: number; tickLen: number; v: number };
 
-interface AxisComponentProps {
-  AXIS_MIN?: number;
-  xAxisDetails: AxisDetails;
-  yAxisDetails: AxisDetails;
-}
-const AxisComponent: React.FC<AxisComponentProps> = ({
-  //   AXIS_MIN = -70,
-  xAxisDetails,
-  yAxisDetails,
-}) => {
+const AxisComponent: React.FC = () => {
+  const { state } = useProvider();
+
   const [tickData, setTickData] = useState<TickOrLabel[]>([]);
-  const xAxisMin = xAxisDetails.AXIS_MIN;
-  const xAxisMax = xAxisDetails.AXIS_MAX;
-  const yAxisMin = yAxisDetails.AXIS_MIN;
-  const yAxisMax = yAxisDetails.AXIS_MAX;
+  const xAxisMin = state.xAxisDetails.AXIS_MIN;
+  const xAxisMax = state.xAxisDetails.AXIS_MAX;
+  const yAxisMin = state.yAxisDetails.AXIS_MIN;
+  const yAxisMax = state.yAxisDetails.AXIS_MAX;
   useEffect(() => {
     const ticks: TickOrLabel[] = [];
     // X axis ticks and labels
@@ -65,8 +59,6 @@ const AxisComponent: React.FC<AxisComponentProps> = ({
         <StraightLine
           startPoint={{ x: xAxisMin, y: 0 }}
           endPoint={{ x: xAxisMax, y: 0 }}
-          xAxisDetails={xAxisDetails}
-          yAxisDetails={yAxisDetails}
           labelProps={{
             label: "X Axis",
             alignment: "Down",
@@ -76,8 +68,6 @@ const AxisComponent: React.FC<AxisComponentProps> = ({
         <StraightLine
           startPoint={{ x: 0, y: yAxisMin }}
           endPoint={{ x: 0, y: yAxisMax }}
-          xAxisDetails={xAxisDetails}
-          yAxisDetails={yAxisDetails}
           labelProps={{
             label: "Y Axis",
             alignment: "Up",

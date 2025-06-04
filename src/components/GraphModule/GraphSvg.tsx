@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { ExpressionInterface } from "../../Interface";
 import "./GraphSvg.scss";
 import AxisComponent from "./Axis/AxisComponent";
+import { useProvider } from "../redux/Provider";
+import { AxisActionType } from "../redux/reducerTypes";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
@@ -10,33 +12,31 @@ import {
   yAXIS_MAX,
   yAXIS_MIN,
 } from "./Svgconstants";
-import { AxisDetails } from "./SvgInterface";
+
 interface GraphCanvasProps {
   expressionArray: ExpressionInterface[];
 }
 
 const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
-  const [zoomOutScale, setZoomOutScale] = useState<number>(1); // Placeholder for zoom level, can be used for future zoom functionality
-  const [yAxisDetails, setYAxisDetails] = useState<AxisDetails>({
-    AXIS_MIN: yAXIS_MIN,
-    AXIS_MAX: yAXIS_MAX,
-  });
-  const [xAxisDetails, setXAxisDetails] = useState<AxisDetails>({
-    AXIS_MIN: xAXIS_MIN,
-    AXIS_MAX: xAXIS_MAX,
-  });
+  const { state, dispatch } = useProvider();
 
+  // Update axis details in global state when zoomOutScale changes
   useEffect(() => {
-    setXAxisDetails({
-      AXIS_MIN: Math.round(xAXIS_MIN * zoomOutScale),
-      AXIS_MAX: Math.round(xAXIS_MAX * zoomOutScale),
+    dispatch({
+      type: AxisActionType.SET_X_AXIS,
+      value: {
+        AXIS_MIN: Math.round(xAXIS_MIN * state.zoomOutScale),
+        AXIS_MAX: Math.round(xAXIS_MAX * state.zoomOutScale),
+      },
     });
-
-    setYAxisDetails({
-      AXIS_MIN: Math.round(yAXIS_MIN * zoomOutScale),
-      AXIS_MAX: Math.round(yAXIS_MAX * zoomOutScale),
+    dispatch({
+      type: AxisActionType.SET_Y_AXIS,
+      value: {
+        AXIS_MIN: Math.round(yAXIS_MIN * state.zoomOutScale),
+        AXIS_MAX: Math.round(yAXIS_MAX * state.zoomOutScale),
+      },
     });
-  }, [zoomOutScale]);
+  }, [state.zoomOutScale, dispatch]);
 
   return (
     <div className="main-canvas-area">
@@ -51,18 +51,24 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         ))}
       </div>
       <div className="zoom-level">
-        <p>Zoom Level: {zoomOutScale}x</p>
+        <p>Zoom Level: {state.zoomOutScale}x</p>
         <button
           onClick={() => {
-            setZoomOutScale((prv) => Math.round((prv - 0.1) * 100) / 100);
+            dispatch({
+              type: AxisActionType.SET_ZOOM,
+              value: Math.round((state.zoomOutScale - 0.1) * 100) / 100,
+            });
           }}
-          disabled={zoomOutScale <= 1}
+          disabled={state.zoomOutScale <= 1}
         >
           Zoom In
         </button>
         <button
           onClick={() => {
-            setZoomOutScale((prv) => Math.round((prv + 0.1) * 100) / 100);
+            dispatch({
+              type: AxisActionType.SET_ZOOM,
+              value: Math.round((state.zoomOutScale + 0.1) * 100) / 100,
+            });
           }}
         >
           Zoom Out
@@ -73,10 +79,7 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         height={CANVAS_HEIGHT}
         style={{ background: "#f9f9f9", border: "1px solid #ccc" }}
       >
-        <AxisComponent
-          yAxisDetails={yAxisDetails}
-          xAxisDetails={xAxisDetails}
-        />
+        <AxisComponent />
       </svg>
     </div>
   );

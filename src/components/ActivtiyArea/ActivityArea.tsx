@@ -3,6 +3,7 @@ import LeftPanel from "../LeftPanel/LeftPanel";
 import MainCanvasArea from "../GraphModule/GraphSvg";
 import "./ActivityArea.scss";
 import { ExpressionInterface } from "../../Interface";
+import { Provider } from "../redux/Provider";
 const ActivityArea: React.FC = () => {
   const [expressionArray, setExpressionArray] = useState<ExpressionInterface[]>(
     [
@@ -35,13 +36,15 @@ const ActivityArea: React.FC = () => {
     ]
   );
   return (
-    <main className="activity-area">
-      <LeftPanel
-        expressionArray={expressionArray}
-        setExpressionArray={setExpressionArray}
-      />
-      <MainCanvasArea expressionArray={expressionArray} />
-    </main>
+    <Provider>
+      <main className="activity-area">
+        <LeftPanel
+          expressionArray={expressionArray}
+          setExpressionArray={setExpressionArray}
+        />
+        <MainCanvasArea expressionArray={expressionArray} />
+      </main>
+    </Provider>
   );
 };
 

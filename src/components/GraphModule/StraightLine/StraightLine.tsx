@@ -1,12 +1,11 @@
 import React from "react";
 import { AxisDetails, Points } from "../SvgInterface";
 import { xToSvg, yToSvg } from "../HelperFunction/HelperFunction";
+import { useProvider } from "../../redux/Provider";
 
 interface StaightLineProps {
   startPoint: Points;
   endPoint: Points;
-  xAxisDetails: AxisDetails;
-  yAxisDetails: AxisDetails;
   strokeWidth?: number;
   color?: string;
   labelProps?: {
@@ -19,16 +18,16 @@ interface StaightLineProps {
 const StaightLine: React.FC<StaightLineProps> = ({
   startPoint,
   endPoint,
-  xAxisDetails,
-  yAxisDetails,
   strokeWidth,
   color = "black",
   labelProps,
 }) => {
-  const xAxisMin = xAxisDetails.AXIS_MIN;
-  const xAxisMax = xAxisDetails.AXIS_MAX;
-  const yAxisMin = yAxisDetails.AXIS_MIN;
-  const yAxisMax = yAxisDetails.AXIS_MAX;
+  const { state } = useProvider();
+
+  const xAxisMin = state.xAxisDetails.AXIS_MIN;
+  const xAxisMax = state.xAxisDetails.AXIS_MAX;
+  const yAxisMin = state.yAxisDetails.AXIS_MIN;
+  const yAxisMax = state.yAxisDetails.AXIS_MAX;
   const x1 = xToSvg(startPoint.x, xAxisMin, xAxisMax);
   const x2 = xToSvg(endPoint.x, xAxisMin, xAxisMax);
   const y1 = yToSvg(startPoint.y, yAxisMin, yAxisMax);
