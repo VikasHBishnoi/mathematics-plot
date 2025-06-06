@@ -46,7 +46,7 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         tickEvery: yTickEvery,
       },
     });
-  }, [state.zoomOutScale, dispatch]);
+  }, [state.zoomOutScale]);
 
   return (
     <div className="main-canvas-area">

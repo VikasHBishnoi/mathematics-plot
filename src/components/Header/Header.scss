@@ -1,10 +1,75 @@
 .header {
-    padding: 1rem;
-    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    background: var(--background-color);
     border-bottom: 1px solid #ddd;
+    height: 60px;
 
     .header-title {
         margin: 0;
         font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1px;
     }
+
+    .info-btn {
+        background: #fff;
+        color: #2d3a4a;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.2s, color 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .info-btn:hover {
+        background: #e0e0e0;
+        color: #1a2330;
+    }
+}
+
+// Modal styles (add at the end of the file)
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    color: #222;
+    padding: 24px;
+    border-radius: 8px;
+    min-width: 320px;
+    max-width: 90vw;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+    animation: modalIn 0.2s;
+}
+@keyframes modalIn {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.modal-content h2 {
+    margin-top: 0;
+}
+.modal-content button {
+    margin-top: 16px;
+    background: #2d3a4a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.modal-content button:hover {
+    background: #1a2330;
 }
