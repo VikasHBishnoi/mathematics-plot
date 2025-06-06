@@ -20,20 +20,30 @@ interface GraphCanvasProps {
 const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
   const { state, dispatch } = useProvider();
 
-  // Update axis details in global state when zoomOutScale changes
   useEffect(() => {
+    // Calculate axis values and tickEvery only once
+    const xAxisMin = Math.round(xAXIS_MIN * state.zoomOutScale);
+    const xAxisMax = Math.round(xAXIS_MAX * state.zoomOutScale);
+    const yAxisMin = Math.round(yAXIS_MIN * state.zoomOutScale);
+    const yAxisMax = Math.round(yAXIS_MAX * state.zoomOutScale);
+
+    const xTickEvery = Math.ceil((xAxisMax - xAxisMin) / 50);
+    const yTickEvery = Math.ceil((yAxisMax - yAxisMin) / 50);
+
     dispatch({
       type: AxisActionType.SET_X_AXIS,
       value: {
-        AXIS_MIN: Math.round(xAXIS_MIN * state.zoomOutScale),
-        AXIS_MAX: Math.round(xAXIS_MAX * state.zoomOutScale),
+        axisMin: xAxisMin,
+        axisMax: xAxisMax,
+        tickEvery: xTickEvery,
       },
     });
     dispatch({
       type: AxisActionType.SET_Y_AXIS,
       value: {
-        AXIS_MIN: Math.round(yAXIS_MIN * state.zoomOutScale),
-        AXIS_MAX: Math.round(yAXIS_MAX * state.zoomOutScale),
+        axisMin: yAxisMin,
+        axisMax: yAxisMax,
+        tickEvery: yTickEvery,
       },
     });
   }, [state.zoomOutScale, dispatch]);

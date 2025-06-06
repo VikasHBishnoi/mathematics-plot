@@ -1,5 +1,5 @@
 import React from "react";
-import { AxisDetails, Points } from "../SvgInterface";
+import { Points } from "../SvgInterface";
 import { xToSvg, yToSvg } from "../HelperFunction/HelperFunction";
 import { useProvider } from "../../redux/Provider";
 
@@ -24,10 +24,10 @@ const StaightLine: React.FC<StaightLineProps> = ({
 }) => {
   const { state } = useProvider();
 
-  const xAxisMin = state.xAxisDetails.AXIS_MIN;
-  const xAxisMax = state.xAxisDetails.AXIS_MAX;
-  const yAxisMin = state.yAxisDetails.AXIS_MIN;
-  const yAxisMax = state.yAxisDetails.AXIS_MAX;
+  const xAxisMin = state.xAxisDetails.axisMin;
+  const xAxisMax = state.xAxisDetails.axisMax;
+  const yAxisMin = state.yAxisDetails.axisMin;
+  const yAxisMax = state.yAxisDetails.axisMax;
   const x1 = xToSvg(startPoint.x, xAxisMin, xAxisMax);
   const x2 = xToSvg(endPoint.x, xAxisMin, xAxisMax);
   const y1 = yToSvg(startPoint.y, yAxisMin, yAxisMax);

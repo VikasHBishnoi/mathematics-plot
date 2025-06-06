@@ -1,7 +1,7 @@
 export const CANVAS_WIDTH = 600;
 export const CANVAS_HEIGHT = 400;
-export const yAXIS_MIN = -80;
-export const yAXIS_MAX = 100;
+export const yAXIS_MIN = -40;
+export const yAXIS_MAX = 50;
 export const xAXIS_MIN = -40;
 export const xAXIS_MAX = 60;
 export const TICK_EVERY = 2;

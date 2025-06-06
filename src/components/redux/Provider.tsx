@@ -6,12 +6,15 @@ import {
   xAXIS_MIN,
   yAXIS_MAX,
   yAXIS_MIN,
-} from "../GraphModule/Svgconstants";
+} from "../GraphModule/Svgconstants"
+
+const xAxisTickEvery=Math.ceil((xAXIS_MAX - xAXIS_MIN) / 50);
+const yAxisTickEvery=Math.ceil((yAXIS_MAX - yAXIS_MIN) / 50);
 
 const initialState: State = {
   zoomOutScale: 1,
-  xAxisDetails: { AXIS_MIN: xAXIS_MIN, AXIS_MAX: xAXIS_MAX },
-  yAxisDetails: { AXIS_MIN: yAXIS_MIN, AXIS_MAX: yAXIS_MAX },
+  xAxisDetails: { axisMin: xAXIS_MIN, axisMax: xAXIS_MAX , tickEvery: xAxisTickEvery},
+  yAxisDetails: { axisMin: yAXIS_MIN, axisMax: yAXIS_MAX ,tickEvery:yAxisTickEvery},
 };
 
 function reducer(state: State, action: Action): State {

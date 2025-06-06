@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { xToSvg, yToSvg } from "../HelperFunction/HelperFunction";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../Svgconstants";
-import { AxisDetails } from "../SvgInterface";
 import StraightLine from "../StraightLine/StraightLine";
 import { useProvider } from "../../redux/Provider";
-const TICK_EVERY = 2;
-const TICK_10 = 10;
-const TICK_20 = 20;
 
 type TickOrLabel =
   | { type: "xtick"; x: number; y0: number; tickLen: number; v: number }
@@ -18,34 +13,43 @@ const AxisComponent: React.FC = () => {
   const { state } = useProvider();
 
   const [tickData, setTickData] = useState<TickOrLabel[]>([]);
-  const xAxisMin = state.xAxisDetails.AXIS_MIN;
-  const xAxisMax = state.xAxisDetails.AXIS_MAX;
-  const yAxisMin = state.yAxisDetails.AXIS_MIN;
-  const yAxisMax = state.yAxisDetails.AXIS_MAX;
+  const xAxisMin = state.xAxisDetails.axisMin;
+  const xAxisMax = state.xAxisDetails.axisMax;
+  const yAxisMin = state.yAxisDetails.axisMin;
+  const yAxisMax = state.yAxisDetails.axisMax;
+  const tickEveryXAxis = state.xAxisDetails.tickEvery;
+  const tickEveryYAxis = state.yAxisDetails.tickEvery;
+  // const TICK_EVERY
   useEffect(() => {
     const ticks: TickOrLabel[] = [];
     // X axis ticks and labels
-    for (let v = xAxisMin; v <= xAxisMax; v += TICK_EVERY) {
+    const startX = xAxisMin - (xAxisMin % tickEveryXAxis)+tickEveryXAxis;
+    for (let v = startX; v <xAxisMax; v += tickEveryXAxis) {
+      if(v==0){
+        continue;
+      }
       let x = xToSvg(v, xAxisMin, xAxisMax);
       let y0 = yToSvg(0, yAxisMin, yAxisMax);
       let tickLen = 6;
-      if (v % TICK_20 === 0) tickLen = 14;
-      else if (v % TICK_10 === 0) tickLen = 10;
+      if (v % (5 * tickEveryXAxis) === 0) tickLen = 14;
       ticks.push({ type: "xtick", x, y0, tickLen, v });
-      if (v % TICK_20 === 0 && v !== 0) {
+      if (v % (5 * tickEveryXAxis) === 0 && v !== 0) {
         ticks.push({ type: "xlabel", x, y0, tickLen, v });
       }
     }
 
     // Y axis ticks and labels
-    for (let v = yAxisMin; v <= yAxisMax; v += TICK_EVERY) {
+    const startY = yAxisMin - (yAxisMin % tickEveryYAxis)+tickEveryYAxis;
+    for (let v = startY; v < yAxisMax; v += tickEveryYAxis) {
+      if(v==0){
+        continue;
+      }
       let y = yToSvg(v, yAxisMin, yAxisMax);
       let x0 = xToSvg(0, xAxisMin, xAxisMax);
       let tickLen = 6;
-      if (v % TICK_20 === 0) tickLen = 18;
-      else if (v % TICK_10 === 0) tickLen = 12;
+      if (v % (5*tickEveryYAxis) === 0) tickLen = 18;
       ticks.push({ type: "ytick", y, x0, tickLen, v });
-      if (v % TICK_20 === 0 && v !== 0) {
+      if (v % (5*tickEveryYAxis) === 0 && v !== 0) {
         ticks.push({ type: "ylabel", y, x0, tickLen, v });
       }
     }
