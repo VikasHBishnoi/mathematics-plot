@@ -1,6 +1,7 @@
 export interface AxisDetails {
-    AXIS_MIN: number;
-    AXIS_MAX: number;
+    axisMin: number;
+    axisMax: number;
+    tickEvery: number;
 }
 
 export interface Points {
