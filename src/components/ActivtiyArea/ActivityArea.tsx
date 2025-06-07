@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LeftPanel from "../LeftPanel/LeftPanel";
-import MainCanvasArea from "../GraphModule/GraphSvg";
+import GraphSvg from "../GraphModule/GraphSvg";
 import "./ActivityArea.scss";
 import { ExpressionInterface } from "../../Interface";
 import { Provider } from "../redux/Provider";
@@ -42,7 +42,7 @@ const ActivityArea: React.FC = () => {
           expressionArray={expressionArray}
           setExpressionArray={setExpressionArray}
         />
-        <MainCanvasArea expressionArray={expressionArray} />
+        <GraphSvg expressionArray={expressionArray} />
       </main>
     </Provider>
   );

@@ -4,17 +4,27 @@ import { AxisActionType, State, Action } from "./reducerTypes";
 import {
   xAXIS_MAX,
   xAXIS_MIN,
+  xAxisTickCount,
   yAXIS_MAX,
   yAXIS_MIN,
-} from "../GraphModule/Svgconstants"
+  yAxisTickCount,
+} from "../GraphModule/Svgconstants";
 
-const xAxisTickEvery=Math.ceil((xAXIS_MAX - xAXIS_MIN) / 50);
-const yAxisTickEvery=Math.ceil((yAXIS_MAX - yAXIS_MIN) / 50);
+const xAxisTickEvery = Math.ceil((xAXIS_MAX - xAXIS_MIN) / xAxisTickCount);
+const yAxisTickEvery = Math.ceil((yAXIS_MAX - yAXIS_MIN) / yAxisTickCount);
 
 const initialState: State = {
   zoomOutScale: 1,
-  xAxisDetails: { axisMin: xAXIS_MIN, axisMax: xAXIS_MAX , tickEvery: xAxisTickEvery},
-  yAxisDetails: { axisMin: yAXIS_MIN, axisMax: yAXIS_MAX ,tickEvery:yAxisTickEvery},
+  xAxisDetails: {
+    axisMin: xAXIS_MIN,
+    axisMax: xAXIS_MAX,
+    tickEvery: xAxisTickEvery,
+  },
+  yAxisDetails: {
+    axisMin: yAXIS_MIN,
+    axisMax: yAXIS_MAX,
+    tickEvery: yAxisTickEvery,
+  },
 };
 
 function reducer(state: State, action: Action): State {

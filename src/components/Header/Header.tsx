@@ -39,9 +39,6 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
               <li>
                 <code>3*x^4 - 5*x + 7</code>
               </li>
-              <li>
-                <code>sin(x)</code> (if supported)
-              </li>
             </ul>
           </li>
         </ul>

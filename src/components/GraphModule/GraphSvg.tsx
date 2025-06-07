@@ -9,15 +9,17 @@ import {
   CANVAS_WIDTH,
   xAXIS_MAX,
   xAXIS_MIN,
+  xAxisTickCount,
   yAXIS_MAX,
   yAXIS_MIN,
+  yAxisTickCount,
 } from "./Svgconstants";
 
 interface GraphCanvasProps {
   expressionArray: ExpressionInterface[];
 }
 
-const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
+const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
   const { state, dispatch } = useProvider();
 
   useEffect(() => {
@@ -27,8 +29,8 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
     const yAxisMin = Math.round(yAXIS_MIN * state.zoomOutScale);
     const yAxisMax = Math.round(yAXIS_MAX * state.zoomOutScale);
 
-    const xTickEvery = Math.ceil((xAxisMax - xAxisMin) / 50);
-    const yTickEvery = Math.ceil((yAxisMax - yAxisMin) / 50);
+    const xTickEvery = Math.ceil((xAxisMax - xAxisMin) / xAxisTickCount);
+    const yTickEvery = Math.ceil((yAxisMax - yAxisMin) / yAxisTickCount);
 
     dispatch({
       type: AxisActionType.SET_X_AXIS,
@@ -50,16 +52,12 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
 
   return (
     <div className="main-canvas-area">
-      <h2>Main Canvas Area</h2>
-      <div>
-        {expressionArray.map((expression, index) => (
-          <div key={"expressioncanvas" + index} className="expression-item">
-            {expression.isEquationShown && (
-              <p>{`Equation: ${expression.equationInputStr}`}</p>
-            )}
-          </div>
-        ))}
-      </div>
+      <svg
+        viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
+        style={{ background: "#f9f9f9", border: "1px solid #ccc" }}
+      >
+        <AxisComponent />
+      </svg>
       <div className="zoom-level">
         <p>Zoom Level: {state.zoomOutScale}x</p>
         <button
@@ -84,15 +82,8 @@ const MainCanvasArea: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
           Zoom Out
         </button>
       </div>
-      <svg
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
-        style={{ background: "#f9f9f9", border: "1px solid #ccc" }}
-      >
-        <AxisComponent />
-      </svg>
     </div>
   );
 };
 
-export default MainCanvasArea;
+export default GraphSvg;

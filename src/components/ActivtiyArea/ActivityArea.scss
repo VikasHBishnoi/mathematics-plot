@@ -3,7 +3,7 @@
 .activity-area {
     display: flex;
     width: 100%;
-    flex: 1;
+    height: 100%;
     align-items: center;
     justify-content: center;
 
@@ -15,5 +15,6 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        height: 100%;
     }
 }
