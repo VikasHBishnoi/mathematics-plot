@@ -1,5 +1,5 @@
 // Provider.tsx
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, useMemo } from "react";
 import { AxisActionType, State, Action } from "./reducerTypes";
 import {
   xAXIS_MAX,
@@ -52,9 +52,8 @@ export const Provider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  return (
-    <Context.Provider value={{ state, dispatch }}>{children}</Context.Provider>
-  );
+  const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+  return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 };
 
 export const useProvider = () => useContext(Context);
