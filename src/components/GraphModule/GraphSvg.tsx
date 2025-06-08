@@ -14,6 +14,7 @@ import {
   yAXIS_MIN,
   yAxisTickCount,
 } from "./Svgconstants";
+import DrawExpression from "./DrawExpression/DrawExpression";
 
 interface GraphCanvasProps {
   expressionArray: ExpressionInterface[];
@@ -56,6 +57,11 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         viewBox={`0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}`}
         style={{ background: "#f9f9f9", border: "1px solid #ccc" }}
       >
+        {expressionArray.map((expr, idx) =>
+          expr.isEquationShown ? (
+            <DrawExpression key={"draw" + idx} expression={expr} color="blue" />
+          ) : null
+        )}
         <AxisComponent />
       </svg>
       <div className="zoom-level">
