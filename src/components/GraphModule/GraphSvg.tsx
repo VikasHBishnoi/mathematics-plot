@@ -7,12 +7,10 @@ import { AxisActionType } from "../redux/reducerTypes";
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
-  xAXIS_MAX,
-  xAXIS_MIN,
-  xAxisTickCount,
-  yAXIS_MAX,
-  yAXIS_MIN,
-  yAxisTickCount,
+  xAxisNegativeTickCount,
+  xAxisPositiveTickCount,
+  yAxisNegativeTickCount,
+  yAxisPositiveTickCount,
 } from "./Svgconstants";
 import DrawExpression from "./DrawExpression/DrawExpression";
 import SliderInput from "../FormElements/SliderInput/SliderInput";
@@ -25,55 +23,22 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
   const { state, dispatch } = useProvider();
 
   useEffect(() => {
-    // Calculate axis values and tickEvery only once
-    const xAxisMin = Math.round(xAXIS_MIN * state.zoomOutScale);
-    const xAxisMax = Math.round(xAXIS_MAX * state.zoomOutScale);
-    const yAxisMin = Math.round(yAXIS_MIN * state.zoomOutScale);
-    const yAxisMax = Math.round(yAXIS_MAX * state.zoomOutScale);
-
-    const xTickEvery = Math.ceil((xAxisMax - xAxisMin) / xAxisTickCount);
-    const yTickEvery = Math.ceil((yAxisMax - yAxisMin) / yAxisTickCount);
-
     dispatch({
       type: AxisActionType.SET_X_AXIS,
       value: {
-        axisMin: xAxisMin,
-        axisMax: xAxisMax,
-        tickEvery: xTickEvery,
+        axisMin: -state.tickXScale * xAxisNegativeTickCount,
+        axisMax: state.tickXScale * xAxisPositiveTickCount,
       },
     });
-    dispatch({
-      type: AxisActionType.SET_Y_AXIS,
-      value: {
-        axisMin: yAxisMin,
-        axisMax: yAxisMax,
-        tickEvery: yTickEvery,
-      },
-    });
-  }, [state.zoomOutScale]);
-
-  useEffect(() => {
-    // Update the zoom level based on the current state
-    dispatch({
-      type: AxisActionType.SET_ZOOM,
-      value: Math.round(state.zoomOutScale * 100) / 100,
-    });
-
-    // dispatch({
-    //   type: AxisActionType.SET_X_AXIS,
-    //   value: {
-    //     axisMin: xAxisMin,
-    //     axisMax: xAxisMax,
-    //     tickEvery: xTickEvery,
-    //   },
-    // });
   }, [state.tickXScale]);
 
   useEffect(() => {
-    // Update the zoom level based on the current state
     dispatch({
-      type: AxisActionType.SET_ZOOM,
-      value: Math.round(state.zoomOutScale * 100) / 100,
+      type: AxisActionType.SET_Y_AXIS,
+      value: {
+        axisMin: -state.tickYScale * yAxisNegativeTickCount,
+        axisMax: state.tickYScale * yAxisPositiveTickCount,
+      },
     });
   }, [state.tickYScale]);
 
@@ -91,28 +56,6 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         <AxisComponent />
       </svg>
       <div className="zoom-level">
-        <p>Zoom Level: {state.zoomOutScale}x</p>
-        <button
-          onClick={() => {
-            dispatch({
-              type: AxisActionType.SET_ZOOM,
-              value: Math.round((state.zoomOutScale - 0.1) * 100) / 100,
-            });
-          }}
-          disabled={state.zoomOutScale <= 1}
-        >
-          Zoom In
-        </button>
-        <button
-          onClick={() => {
-            dispatch({
-              type: AxisActionType.SET_ZOOM,
-              value: Math.round((state.zoomOutScale + 0.1) * 100) / 100,
-            });
-          }}
-        >
-          Zoom Out
-        </button>
         <SliderInput
           id="zoom-slider"
           min={1}

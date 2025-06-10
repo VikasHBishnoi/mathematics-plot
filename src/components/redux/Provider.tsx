@@ -1,31 +1,24 @@
-// Provider.tsx
 import React, { createContext, useReducer, useContext, useMemo } from "react";
 import { AxisActionType, State, Action } from "./reducerTypes";
 import {
-  xAXIS_MAX,
-  xAXIS_MIN,
-  xAxisTickCount,
-  yAXIS_MAX,
-  yAXIS_MIN,
-  yAxisTickCount,
+  tickEvery,
+  xAxisNegativeTickCount,
+  xAxisPositiveTickCount,
+  yAxisNegativeTickCount,
+  yAxisPositiveTickCount,
 } from "../GraphModule/Svgconstants";
-
-const xAxisTickEvery = Math.ceil((xAXIS_MAX - xAXIS_MIN) / xAxisTickCount);
-const yAxisTickEvery = Math.ceil((yAXIS_MAX - yAXIS_MIN) / yAxisTickCount);
 
 const initialState: State = {
   zoomOutScale: 1,
   tickXScale: 1,
   tickYScale: 1,
   xAxisDetails: {
-    axisMin: xAXIS_MIN,
-    axisMax: xAXIS_MAX,
-    tickEvery: xAxisTickEvery,
+    axisMin: -tickEvery * xAxisNegativeTickCount,
+    axisMax: tickEvery * xAxisPositiveTickCount,
   },
   yAxisDetails: {
-    axisMin: yAXIS_MIN,
-    axisMax: yAXIS_MAX,
-    tickEvery: yAxisTickEvery,
+    axisMin: -tickEvery * yAxisNegativeTickCount,
+    axisMax: tickEvery * yAxisPositiveTickCount,
   },
 };
 

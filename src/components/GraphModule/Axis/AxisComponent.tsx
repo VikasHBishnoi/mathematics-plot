@@ -17,15 +17,15 @@ const AxisComponent: React.FC = () => {
   const xAxisMax = state.xAxisDetails.axisMax;
   const yAxisMin = state.yAxisDetails.axisMin;
   const yAxisMax = state.yAxisDetails.axisMax;
-  const tickEveryXAxis = state.xAxisDetails.tickEvery;
-  const tickEveryYAxis = state.yAxisDetails.tickEvery;
+  const tickEveryXAxis = state.tickXScale;
+  const tickEveryYAxis = state.tickYScale;
   // const TICK_EVERY
   useEffect(() => {
     const ticks: TickOrLabel[] = [];
     // X axis ticks and labels
-    const startX = xAxisMin - (xAxisMin % tickEveryXAxis)+tickEveryXAxis;
-    for (let v = startX; v <xAxisMax; v += tickEveryXAxis) {
-      if(v==0){
+    const startX = xAxisMin - (xAxisMin % tickEveryXAxis) + tickEveryXAxis;
+    for (let v = startX; v < xAxisMax; v += tickEveryXAxis) {
+      if (v == 0) {
         continue;
       }
       let x = xToSvg(v, xAxisMin, xAxisMax);
@@ -39,17 +39,17 @@ const AxisComponent: React.FC = () => {
     }
 
     // Y axis ticks and labels
-    const startY = yAxisMin - (yAxisMin % tickEveryYAxis)+tickEveryYAxis;
+    const startY = yAxisMin - (yAxisMin % tickEveryYAxis) + tickEveryYAxis;
     for (let v = startY; v < yAxisMax; v += tickEveryYAxis) {
-      if(v==0){
+      if (v == 0) {
         continue;
       }
       let y = yToSvg(v, yAxisMin, yAxisMax);
       let x0 = xToSvg(0, xAxisMin, xAxisMax);
       let tickLen = 6;
-      if (v % (5*tickEveryYAxis) === 0) tickLen = 18;
+      if (v % (5 * tickEveryYAxis) === 0) tickLen = 18;
       ticks.push({ type: "ytick", y, x0, tickLen, v });
-      if (v % (5*tickEveryYAxis) === 0 && v !== 0) {
+      if (v % (5 * tickEveryYAxis) === 0 && v !== 0) {
         ticks.push({ type: "ylabel", y, x0, tickLen, v });
       }
     }
