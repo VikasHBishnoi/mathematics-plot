@@ -8,25 +8,25 @@ const ActivityArea: React.FC = () => {
   const [expressionArray, setExpressionArray] = useState<ExpressionInterface[]>(
     [
       {
-        equationInputStr: "x+2",
+        equationInputStr: "10x+2",
         isEquationShown: false,
         equationParamters: {
           equationParamtersArray: [
             {
               power: 1,
-              coefficient: 1,
+              coefficient: 10,
             },
           ],
           constant: 2,
         },
       },
       {
-        equationInputStr: "x^2+2",
+        equationInputStr: "x^3+2",
         isEquationShown: false,
         equationParamters: {
           equationParamtersArray: [
             {
-              power: 2,
+              power: 3,
               coefficient: 1,
             },
           ],

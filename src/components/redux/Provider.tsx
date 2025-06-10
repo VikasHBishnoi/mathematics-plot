@@ -1,29 +1,24 @@
-// Provider.tsx
 import React, { createContext, useReducer, useContext, useMemo } from "react";
 import { AxisActionType, State, Action } from "./reducerTypes";
 import {
-  xAXIS_MAX,
-  xAXIS_MIN,
-  xAxisTickCount,
-  yAXIS_MAX,
-  yAXIS_MIN,
-  yAxisTickCount,
+  tickEvery,
+  xAxisNegativeTickCount,
+  xAxisPositiveTickCount,
+  yAxisNegativeTickCount,
+  yAxisPositiveTickCount,
 } from "../GraphModule/Svgconstants";
-
-const xAxisTickEvery = Math.ceil((xAXIS_MAX - xAXIS_MIN) / xAxisTickCount);
-const yAxisTickEvery = Math.ceil((yAXIS_MAX - yAXIS_MIN) / yAxisTickCount);
 
 const initialState: State = {
   zoomOutScale: 1,
+  tickXScale: 1,
+  tickYScale: 1,
   xAxisDetails: {
-    axisMin: xAXIS_MIN,
-    axisMax: xAXIS_MAX,
-    tickEvery: xAxisTickEvery,
+    axisMin: -tickEvery * xAxisNegativeTickCount,
+    axisMax: tickEvery * xAxisPositiveTickCount,
   },
   yAxisDetails: {
-    axisMin: yAXIS_MIN,
-    axisMax: yAXIS_MAX,
-    tickEvery: yAxisTickEvery,
+    axisMin: -tickEvery * yAxisNegativeTickCount,
+    axisMax: tickEvery * yAxisPositiveTickCount,
   },
 };
 
@@ -31,6 +26,10 @@ function reducer(state: State, action: Action): State {
   switch (action.type) {
     case AxisActionType.SET_ZOOM:
       return { ...state, zoomOutScale: action.value };
+    case AxisActionType.TICK_X_SCALE:
+      return { ...state, tickXScale: action.value };
+    case AxisActionType.TICK_Y_SCALE:
+      return { ...state, tickYScale: action.value };
     case AxisActionType.SET_X_AXIS:
       return { ...state, xAxisDetails: action.value };
     case AxisActionType.SET_Y_AXIS:
