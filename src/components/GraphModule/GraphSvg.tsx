@@ -15,6 +15,7 @@ import {
   yAxisTickCount,
 } from "./Svgconstants";
 import DrawExpression from "./DrawExpression/DrawExpression";
+import SliderInput from "../FormElements/SliderInput/SliderInput";
 
 interface GraphCanvasProps {
   expressionArray: ExpressionInterface[];
@@ -50,6 +51,31 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
       },
     });
   }, [state.zoomOutScale]);
+
+  useEffect(() => {
+    // Update the zoom level based on the current state
+    dispatch({
+      type: AxisActionType.SET_ZOOM,
+      value: Math.round(state.zoomOutScale * 100) / 100,
+    });
+
+    // dispatch({
+    //   type: AxisActionType.SET_X_AXIS,
+    //   value: {
+    //     axisMin: xAxisMin,
+    //     axisMax: xAxisMax,
+    //     tickEvery: xTickEvery,
+    //   },
+    // });
+  }, [state.tickXScale]);
+
+  useEffect(() => {
+    // Update the zoom level based on the current state
+    dispatch({
+      type: AxisActionType.SET_ZOOM,
+      value: Math.round(state.zoomOutScale * 100) / 100,
+    });
+  }, [state.tickYScale]);
 
   return (
     <div className="main-canvas-area">
@@ -87,6 +113,32 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
         >
           Zoom Out
         </button>
+        <SliderInput
+          id="zoom-slider"
+          min={1}
+          max={100}
+          step={1}
+          value={state.tickXScale}
+          onChange={(value) => {
+            dispatch({
+              type: AxisActionType.TICK_X_SCALE,
+              value: value,
+            });
+          }}
+        ></SliderInput>
+        <SliderInput
+          id="zoom-slider"
+          min={1}
+          max={100}
+          step={1}
+          value={state.tickYScale}
+          onChange={(value) => {
+            dispatch({
+              type: AxisActionType.TICK_Y_SCALE,
+              value: value,
+            });
+          }}
+        ></SliderInput>
       </div>
     </div>
   );
