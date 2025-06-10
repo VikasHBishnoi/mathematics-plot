@@ -62,6 +62,7 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
           max={100}
           step={1}
           value={state.tickXScale}
+          label="X Axis Tick Scale"
           onChange={(value) => {
             dispatch({
               type: AxisActionType.TICK_X_SCALE,
@@ -75,6 +76,7 @@ const GraphSvg: React.FC<GraphCanvasProps> = ({ expressionArray }) => {
           max={100}
           step={1}
           value={state.tickYScale}
+          label="Y Axis Tick Scale"
           onChange={(value) => {
             dispatch({
               type: AxisActionType.TICK_Y_SCALE,
