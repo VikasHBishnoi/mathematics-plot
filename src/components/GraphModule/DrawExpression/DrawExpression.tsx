@@ -22,15 +22,24 @@ const DrawExpression: React.FC<DrawExpressionProps> = ({
   const evaluate = (x: number) => {
     let sum = 0;
     for (const param of expression.equationParamters.equationParamtersArray) {
-      sum += param.coefficient * Math.pow(x, param.power);
+      const currentElement = param.coefficient * Math.pow(x, param.power);
+      sum += currentElement;
     }
     sum += expression.equationParamters.constant;
     return sum;
   };
 
+  const hasFractionalPower = () => {
+    return expression.equationParamters.equationParamtersArray.some(
+      (param) => param.power < 1 && param.power > -1
+    );
+  };
+
   // Generate points
   const points: { x: number; y: number }[] = [];
-  for (let x = xMin; x <= xMax; x += step) {
+  const loopStart = hasFractionalPower() ? 0 : xMin;
+
+  for (let x = loopStart; x <= xMax; x += step) {
     const y = evaluate(x);
     points.push({ x: xToSvg(x, xMin, xMax), y: yToSvg(y, yMin, yMax) });
   }

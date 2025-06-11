@@ -1,4 +1,4 @@
-import { ChangeEvent, SetStateAction} from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import Expression from "../Expression/Expression";
 import CheckboxItemList from "../FormElements/CheckboxItem/CheckbotItemList";
 import { ExpressionInterface, ExpressionParameters } from "../../Interface";
@@ -17,31 +17,42 @@ const ExpressionSelector: React.FC<ExpressionSelectorProps> = ({
     equationParamtersArray: ExpressionParameters[];
     constant: number;
   } => {
-    // Match terms like 2x^2, -3x, x, -x
-    const paramRegex = /([+-]?\d*)x(?:\^(\d+))?/g;
+    // Normalize input: remove spaces, replace (x^...) with x^...
+    let input = inputValue.replace(/\s+/g, "");
+    input = input.replace(/\(x\^([^)]+)\)/g, "x^$1");
+
+    // Match terms like 2*x^5, 2x^0.4, -x^2, +3.5*x, -4x, x, -x, etc.
+    const termRegex = /([+-]?[\d.]*)(\*?)x(?:\^([+-]?[\d.]+))?/gi;
     const equationParamtersArray: ExpressionParameters[] = [];
     let match;
 
-    while ((match = paramRegex.exec(inputValue)) !== null) {
-      let coefficient =
-        match[1] === "" || match[1] === "+"
-          ? 1
-          : match[1] === "-"
-            ? -1
-            : Number(match[1]);
-      let power = match[2] ? Number(match[2]) : 1;
+    // Extract x terms
+    while ((match = termRegex.exec(input)) !== null) {
+      let coefficientStr = match[1];
+      let powerStr = match[3];
+
+      // Handle cases like x or -x (no coefficient)
+      let coefficient: number;
+      if (coefficientStr === "" || coefficientStr === "+") {
+        coefficient = 1;
+      } else if (coefficientStr === "-") {
+        coefficient = -1;
+      } else {
+        coefficient = Number(coefficientStr);
+      }
+
+      // Default power is 1 if not specified
+      let power = powerStr !== undefined ? Number(powerStr) : 1;
+
       equationParamtersArray.push({ coefficient, power });
     }
 
-    // Match constant term (e.g., +5 or -7)
+    // Remove all x terms (including their coefficients and exponents)
+    const inputWithoutXTerms = input.replace(termRegex, "");
+
+    // Match standalone constants (e.g., +245, -7.5)
     let constant = 0;
-    // Remove all terms with x (including their coefficients and exponents)
-    const inputWithoutXTerms = inputValue.replace(
-      /([+-]?\d*\*?x(\^\d+)?)/g,
-      ""
-    );
-    // Now match standalone numbers
-    const constantMatches = inputWithoutXTerms.match(/([+-]?\d+)/g);
+    const constantMatches = inputWithoutXTerms.match(/[+-]?[\d.]+/g);
     if (constantMatches) {
       constant = constantMatches.map(Number).reduce((a, b) => a + b, 0);
     }
