@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ReactNode } from "react";
-
+import "./CheckboxItemList.scss";
 interface CheckboxProps {
   id: string;
   checked: boolean;
@@ -15,7 +15,13 @@ const CheckboxItemList: React.FC<CheckboxProps> = ({
 }) => {
   return (
     <div className="checkbox-item">
-      <input type="checkbox" id={id} checked={checked} onChange={onChange} />
+      <input
+        type="checkbox"
+        className="checkbox-input"
+        id={id}
+        checked={checked}
+        onChange={onChange}
+      />
       {children}
     </div>
   );

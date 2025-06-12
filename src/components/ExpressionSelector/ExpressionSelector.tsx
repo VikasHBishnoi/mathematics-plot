@@ -83,6 +83,23 @@ const ExpressionSelector: React.FC<ExpressionSelectorProps> = ({
     });
   };
 
+  // Add this function to handle adding a new expression
+  const handleAddExpression = () => {
+    setExpressionArray((prev) => [
+      ...prev,
+      {
+        equationInputStr: "x",
+        isEquationShown: false,
+        equationParamters: parseEquationParameters("x"),
+      },
+    ]);
+  };
+
+  // Add delete handler
+  const handleDeleteExpression = (index: number) => {
+    setExpressionArray((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
     <div className="expression-selector">
       <h2>Expression Selector</h2>
@@ -100,9 +117,13 @@ const ExpressionSelector: React.FC<ExpressionSelectorProps> = ({
             inputValue={expression.equationInputStr}
             expression={expression}
             handleInputChange={(e) => handleInputChange(e, index)}
+            onDelete={() => handleDeleteExpression(index)} // Pass delete handler
           />
         </CheckboxItemList>
       ))}
+      <button type="button" onClick={handleAddExpression}>
+        Add Expression
+      </button>
     </div>
   );
 };
