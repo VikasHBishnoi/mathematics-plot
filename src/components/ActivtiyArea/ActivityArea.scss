@@ -16,5 +16,11 @@
         flex-direction: column;
         justify-content: flex-start;
         height: 100%;
+        .expression-interaction{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap:8px
+        }
     }
 }
